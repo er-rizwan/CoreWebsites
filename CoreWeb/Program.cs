@@ -5,7 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSession();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 var provider= builder.Services.BuildServiceProvider();
 var config=provider.GetRequiredService<IConfiguration>();
 builder.Services.AddDbContext<StudentDBContext>(item => item.UseSqlServer(config.GetConnectionString("SQLConn")));
@@ -22,7 +23,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();

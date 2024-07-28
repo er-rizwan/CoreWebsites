@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<CoreWeb.Models.Student>
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor accessor
+
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
+
 
 @{
     if(TempData["create_msg"]!=null)
@@ -29,7 +33,7 @@
         </div>
     }
 }
-
+<partial name="_StudentName" />
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -51,7 +55,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Standard)
             </th>
-            <th></th>
+            <th>
+                CRUD Operation
+            </th>
         </tr>
     </thead>
     <tbody>

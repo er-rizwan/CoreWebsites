@@ -1,7 +1,9 @@
 using CoreWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Session;
 
 namespace CoreWeb.Controllers
 {
@@ -21,6 +23,7 @@ namespace CoreWeb.Controllers
 		}
         public async Task<IActionResult> Index()
 		{
+			HttpContext.Session.SetString("Name", "Asp Core");
 			var studentdata = await studentDB.Students.ToListAsync();
 				return View(studentdata);
 		}
@@ -28,10 +31,16 @@ namespace CoreWeb.Controllers
 		[HttpGet]
 		public IActionResult Create()
 		{
+			if (HttpContext.Session.GetString("Name")!=null)
+			{
+				ViewBag.Name = HttpContext.Session.Id.ToString();
+
+			}
 			return View();
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(Student student)
 		{
 			if (ModelState.IsValid)
@@ -75,6 +84,7 @@ namespace CoreWeb.Controllers
         }
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(int? id,Student student)
 		{
 			if (!ModelState.IsValid)
@@ -108,6 +118,7 @@ namespace CoreWeb.Controllers
         }
 
 		[HttpPost,ActionName("Delete")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirm(int? id)
 		{
             if (id == null || studentDB.Students == null)

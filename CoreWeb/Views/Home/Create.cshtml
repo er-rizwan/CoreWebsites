@@ -1,10 +1,16 @@
 ﻿@model CoreWeb.Models.Student
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor accessor
+
 
 @{
     ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
+<h2>@ViewBag.Name</h2>
+<h3>@accessor.HttpContext.Session.GetString("Name")</h3>
+
 
 <h4>Student</h4>
 <hr />
